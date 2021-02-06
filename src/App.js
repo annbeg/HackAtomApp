@@ -322,7 +322,7 @@ const optionsStackOverflow = {
         <div style={{height: '2rem'}}></div>
         <Row>
         <Col lg={8}>
-          <Selecter style = {{maxHeight: '10rem'}} value={activeChosenTranformators} data={transformatorsIds} onChange = {onTransformatorChoose}></Selecter>
+          <Selecter style = {{maxHeight: '10rem'}} active={{value: '2_trans_1',label: '2_trans_1'}} data={transformatorsIds} onChange = {onTransformatorChoose}></Selecter>
         </Col>
         <Col lg = {4}>
           <Button variant="success" style={{width: '70px'}} onClick = {() => addTransformators()}>+</Button>
