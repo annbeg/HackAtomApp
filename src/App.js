@@ -63,7 +63,6 @@ const Selecter = ({ data, active, onChange }) => (
         onChange = {(values) => onChange(values)}
         menuPlacement = 'auto'
         maxMenuHeight={100}
-        // onChange={(values) => console.log(values)}
         // className="basic-multi-select"
         // classNamePrefix="select"
     />
@@ -109,14 +108,10 @@ function dictToList(value) {
   return mam
 }
 const App = () => {
-  // var idinfo = require('./idinfo.json');
-  // var id = require('./id.json');
-  // var idinfo = require('./idinfo.json');
-  // var id = require('./id.json');
+  
   const [idInfo, setIdInfo] = useState([])
   const [id,setId] = useState([])
-  // const [users, setUsers] = useState(idinfo['2_trans_1'])
-  // const [mom, setMom] = useState(dictToList(users['C2H2']))
+  
   const [users, setUsers] = useState([])
   const [mom, setMom] = useState([])
   const [transformatorsIds,setTransformatorsIds] = useState([])
@@ -128,31 +123,16 @@ const App = () => {
   useEffect(async ()=>{
     var idInfoData;
     var idData;
-    // async function getIdInfo() {
-    //   await fetch('https://scoeur.pythonanywhere.com/idinfo?id='+'2_trans_1')
-    //     .then(res => res.json())
-    //     // .then(data => idInfoData = data)
-    //     .then(data => setUsers(data['2_trans_1']))
-
-    // }
     
-    // async function getId() {
-    //   await fetch('https://scoeur.pythonanywhere.com/id')
-    //     .then(res => res.json())
-    //     .then(data => idData = data)
-    // }
-    
-    // getIdInfo();
-    // getId();
     await fetch('https://scoeur.pythonanywhere.com/idinfo?id='+'2_trans_1')
         .then(res => res.json())
         .then(data => idInfoData = data)
-        // .then(data => setUsers(data['2_trans_1']))
+
     await fetch('https://scoeur.pythonanywhere.com/id')
         .then(res => res.json())
         .then(data => idData = data)
 
-    // console.log(idInfoData)
+
     setUsers(idInfoData['2_trans_1'])
     setMom(dictToList(idInfoData['2_trans_1']['C2H2']))
     setId(idData)
@@ -172,11 +152,15 @@ const App = () => {
       {
       data: dictToList(idInfoData['2_trans_1']['C2H2']),
       name: 'C2H2',
+    },{
+      data: dictToList(idInfoData['2_trans_1']['CO']),
+      name: 'CO',
     }])
 
   }, [])
   const [activeCharts, setActiveCharts] = useState([
-    {value: 'C2H2',label: 'C2H2'}
+    {value: 'C2H2',label: 'C2H2'},
+    {value: 'CO',label: 'CO'}
   ]);
   
   const [upcommingTransformators, setUpcommingTransformators] = useState([])
@@ -235,19 +219,17 @@ const optionsStackOverflow = {
       
       setOptionSeries(newOptionSeries)
       setActiveTransformator(value)
-      console.log('newOptionSeries',newOptionSeries)
-      console.log('optionSeries', optionSeries)
     }
     function onlyUnique(value, index, self) {
       return self.indexOf(value) === index;
     }
 
   function addTransformators(){
-    var m = currentTransformators.concat(upcommingTransformators).filter(onlyUnique)
-    // setCurrentTransformators(currentTransformators.concat(upcommingTransformators).unique())
+    var m = currentTransformators.concat(upcommingTransformators).filter(((v,i,a)=>a.findIndex(t=>(t.value === v.value && t.label===v.label))===i))
+    
     setCurrentTransformators(m)
     setUpcommingTransformators([])
-    setActiveChosenTranformators([])
+
   }
 
 
