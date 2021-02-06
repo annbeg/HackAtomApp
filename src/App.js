@@ -74,11 +74,6 @@ const Selecter = ({ data, active, onChange }) => (
 // КОНЕЦ СЕЛЕКТА
 
 
-var idinfo = require('./idinfo.json');
-var id = require('./id.json');
-var allinfo = require('./allinfo.json');
-var C2H2 = idinfo['2_trans_1']['C2H2'];
-// var users = idinfo['2_trans_1']
 
 
 const skillsSet = [
@@ -103,14 +98,7 @@ const skillsSet = [
 const typesOfProblems = {
   1: 'Исправная работа', 2:'Частичный разряд', 3:'Разряд низкой энергии', 4: 'Низкотемпературный технический дефект'
 }
-const transformatorsIds = []
 
-for (let i=0;i<id.length;i++){
-  transformatorsIds.push({
-    "value": id[i],
-    "label": id[i]
-})
-}
 
 function dictToList(value) {
   var mam = Object.keys(value)
@@ -121,28 +109,70 @@ function dictToList(value) {
   return mam
 }
 const App = () => {
-  const [users, setUsers] = useState(idinfo['2_trans_1'])
-  const [mom, setMom] = useState(dictToList(users['C2H2']))
+  // var idinfo = require('./idinfo.json');
+  // var id = require('./id.json');
+  // var idinfo = require('./idinfo.json');
+  // var id = require('./id.json');
+  const [idInfo, setIdInfo] = useState([])
+  const [id,setId] = useState([])
+  // const [users, setUsers] = useState(idinfo['2_trans_1'])
+  // const [mom, setMom] = useState(dictToList(users['C2H2']))
+  const [users, setUsers] = useState([])
+  const [mom, setMom] = useState([])
+  const [transformatorsIds,setTransformatorsIds] = useState([])
   const [optionSeries, setOptionSeries] = useState([
     {
     data: mom,
     name: 'C2H2',
   }])
-  useEffect(()=>{
-    // var mam = mom;
-    // var mam = Object.keys(users['C2H2'])
+  useEffect(async ()=>{
+    var idInfoData;
+    var idData;
+    // async function getIdInfo() {
+    //   await fetch('https://scoeur.pythonanywhere.com/idinfo?id='+'2_trans_1')
+    //     .then(res => res.json())
+    //     // .then(data => idInfoData = data)
+    //     .then(data => setUsers(data['2_trans_1']))
 
-    // mam.forEach(function(part, index) {
-    //   this[index] = Number(part);
-    // }, mam);
-    // mam = [mam,Object.values(users['C2H2'])][0].map((_, colIndex) => [mam,Object.values(users['C2H2'])].map(row => row[colIndex]))
-    // setMom(mam)
-    // setOptionSeries([
-    //   {
-    //   data: mom,
-    //   name: 'C2H2',
-    // }])
-    console.log(users)
+    // }
+    
+    // async function getId() {
+    //   await fetch('https://scoeur.pythonanywhere.com/id')
+    //     .then(res => res.json())
+    //     .then(data => idData = data)
+    // }
+    
+    // getIdInfo();
+    // getId();
+    await fetch('https://scoeur.pythonanywhere.com/idinfo?id='+'2_trans_1')
+        .then(res => res.json())
+        .then(data => idInfoData = data)
+        // .then(data => setUsers(data['2_trans_1']))
+    await fetch('https://scoeur.pythonanywhere.com/id')
+        .then(res => res.json())
+        .then(data => idData = data)
+
+    // console.log(idInfoData)
+    setUsers(idInfoData['2_trans_1'])
+    setMom(dictToList(idInfoData['2_trans_1']['C2H2']))
+    setId(idData)
+    setMom(dictToList(idInfoData['2_trans_1']['C2H2']))
+
+    const transformatorsIdsNow = []
+
+    for (let i=0;i<idData.length;i++){
+      transformatorsIdsNow.push({
+        "value": idData[i],
+        "label": idData[i]
+    })
+    }
+    setTransformatorsIds(transformatorsIdsNow)
+    
+    setOptionSeries([
+      {
+      data: dictToList(idInfoData['2_trans_1']['C2H2']),
+      name: 'C2H2',
+    }])
 
   }, [])
   const [activeCharts, setActiveCharts] = useState([
@@ -256,7 +286,7 @@ const optionsStackOverflow = {
   
   return (
     <div className='App'>
-      <div style={{padding: '3rem', fontSize:'2.1em', background: '#3f527c', margin: '-20px', borderRadius: '0 0 10px 10px', color: 'white',boxShadow: '0 0 10px rgba(0,0,0,0.5)'}}>
+      <div style={{padding: '2rem', fontSize:'1.9em', background: '#3f527c', margin: '-20px', borderRadius: '0 0 10px 10px', color: 'white',boxShadow: '0 0 10px rgba(0,0,0,0.5)'}}>
         Мониторинг текущего состояния силовых трансформаторов
       </div>
       <div style={{height:'4rem'}}>
