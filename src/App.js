@@ -286,7 +286,7 @@ const optionsStackOverflow = {
   
   return (
     <div className='App'>
-      <div style={{padding: '2rem', fontSize:'1.9em', background: '#3f527c', margin: '-20px', borderRadius: '0 0 10px 10px', color: 'white',boxShadow: '0 0 10px rgba(0,0,0,0.5)'}}>
+      <div style={{padding: '2.2rem', fontSize:'1.9em', background: '#3f527c', margin: '-20px', borderRadius: '0 0 10px 10px', color: 'white',boxShadow: '0 0 10px rgba(0,0,0,0.5)'}}>
         Мониторинг текущего состояния силовых трансформаторов
       </div>
       <div style={{height:'4rem'}}>
