@@ -142,6 +142,7 @@ const App = () => {
     //   data: mom,
     //   name: 'C2H2',
     // }])
+    console.log(users)
 
   }, [])
   const [activeCharts, setActiveCharts] = useState([
@@ -154,10 +155,11 @@ const App = () => {
     "label": "2_trans_1"
 }])
   const [activeChosenTranformators, setActiveChosenTranformators] = useState([])
+  const [activeTransformator, setActiveTransformator] = useState('2_trans_1')
 
 const optionsStackOverflow = {
     title: {
-      text: 'Востребованность на StackOverflow'
+      text: 'Концентрации газов в '+activeTransformator
     },
     yAxis: [{
       height: '75%',
@@ -166,23 +168,13 @@ const optionsStackOverflow = {
         x: -3
       },
       title: {
-        // text: 'AAPL'
-      }
-    }, {
-      top: '75%',
-      height: '25%',
-      labels: {
-        align: 'right',
-        x: -3
-      },
-      offset: 0,
-      title: {
-        // text: 'MACD'
+        text: 'Объем'
       }
     }],
     series: optionSeries}
 
     async function changeGraphics(value){
+      
       var newId;
 
       await fetch('https://scoeur.pythonanywhere.com/idinfo?id='+value)
@@ -212,6 +204,7 @@ const optionsStackOverflow = {
 
       
       setOptionSeries(newOptionSeries)
+      setActiveTransformator(value)
       console.log('newOptionSeries',newOptionSeries)
       console.log('optionSeries', optionSeries)
     }
@@ -263,7 +256,9 @@ const optionsStackOverflow = {
   
   return (
     <div className='App'>
-      <div style={{padding: '3rem', fontSize:'2.4em', background: '#3f7c54', margin: '-20px', borderRadius: '0 0 10px 10px', color: 'white',boxShadow: '0 0 10px rgba(0,0,0,0.5)'}}>Мониторинг актуальных технологий</div>
+      <div style={{padding: '3rem', fontSize:'2.1em', background: '#3f527c', margin: '-20px', borderRadius: '0 0 10px 10px', color: 'white',boxShadow: '0 0 10px rgba(0,0,0,0.5)'}}>
+        Мониторинг текущего состояния силовых трансформаторов
+      </div>
       <div style={{height:'4rem'}}>
 
       </div>
@@ -274,7 +269,7 @@ const optionsStackOverflow = {
           <div style={{height:'1rem'}}></div>
           Категория состояния: {typesOfProblems[users.category]} <br>
           </br>   
-          Предсказанный день поломки: {users.predicted}
+          Концентрации газов достигнут установки через: {users.predicted}
       <div style={{height:'1rem'}}></div>
       <div style={{width:'50%', margin: 'auto'}}>
         <Selecter style = {{maxHeight: '1rem'}} data={skillsSet} active={activeCharts} onChange = {onChoose}></Selecter>
@@ -284,10 +279,10 @@ const optionsStackOverflow = {
       <div style={{height: '3rem'}}></div>
 
       <Container fluid>
-        <Row md={4} lg={6}>
+        <Row sm ={3} md={3} lg={5}>
           {currentTransformators.map( (transformator, i) => (
             <Col>
-              <Button style = {{width: '140px', marginBottom: '1rem'}} onClick={() => changeGraphics(transformator['value'])}>
+              <Button style = {{width: '135px', marginBottom: '1rem'}} onClick={() => changeGraphics(transformator['value'])}>
                 {transformator['value']}
               </Button>
             </Col>
@@ -300,14 +295,14 @@ const optionsStackOverflow = {
           <Selecter style = {{maxHeight: '10rem'}} value={activeChosenTranformators} data={transformatorsIds} onChange = {onTransformatorChoose}></Selecter>
         </Col>
         <Col lg = {4}>
-          <Button  onClick = {() => addTransformators()}>+</Button>
+          <Button variant="success" style={{width: '70px'}} onClick = {() => addTransformators()}>+</Button>
         </Col>
         </Row>
       </Container>
       
       <div style={{height:'1rem'}}></div>
       <div style={{height: '3rem'}}></div>
-      <div style={{height: '4rem',background: '#3f7c54', margin: '-20px', borderRadius: '10px 10px 0 0', color: 'white',boxShadow: '0 0 10px rgba(0,0,0,0.5)'}}></div>
+      <div style={{height: '4rem',background: '#3f527c', margin: '-20px', borderRadius: '10px 10px 0 0', color: 'white',boxShadow: '0 0 10px rgba(0,0,0,0.5)'}}></div>
     </div>
   );
 }
